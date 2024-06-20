@@ -5,12 +5,15 @@ using UnityEngine;
 
 public class ActionController : MonoBehaviour
 {
-    private Inventory inventory;
-    private Functionality currentFunction;
-    private WaitForSeconds takeCooldown;
-    private bool isWorking = false;
-    private bool isProcessing = false;
-    private bool canPut = true;
+    public Inventory inventory;
+    public Functionality currentFunction;
+    public WaitForSeconds takeCooldown;
+    public bool isWorking = false;
+    public bool isProcessing = false;
+    public bool canPut = true;
+
+    // Item alýndýðýný belirten iþaretleyici
+    public bool itemTaken = false;
 
     private void Awake()
     {
@@ -52,7 +55,7 @@ public class ActionController : MonoBehaviour
         }
     }
 
-    private void StartProcessAction()
+    public void StartProcessAction()
     {
         Debug.Log("StartProcessAction called.");
         Ray ray = new Ray(transform.position + Vector3.up / 2, transform.forward);
@@ -71,7 +74,7 @@ public class ActionController : MonoBehaviour
         }
     }
 
-    private void DoProcess()
+    public void DoProcess()
     {
         if (!isProcessing) return;
         if (!isWorking) return;
@@ -82,6 +85,8 @@ public class ActionController : MonoBehaviour
             currentFunction.ClearObject();
             inventory.TakeItem(item);
             isWorking = false;
+            itemTaken = true;  // Item alýndý iþaretleyicisini true yap
+            Debug.Log("Item taken in DoProcess. Item: " + item + ", itemTaken: " + itemTaken);
         }
     }
 
@@ -101,6 +106,8 @@ public class ActionController : MonoBehaviour
                     {
                         inventory.PutItem();
                         inventory.ClearHand();
+                        itemTaken = false;  // Item býrakýldý iþaretleyicisini false yap
+                        Debug.Log("Item put in box in DoTakeAction. itemTaken: " + itemTaken);
                     }
                 }
             }
@@ -108,6 +115,10 @@ public class ActionController : MonoBehaviour
             {
                 Debug.Log("Hit ItemBox: " + itemBox.name);
                 inventory.TakeItem(itemBox.GetItem());
+
+                itemTaken = true;  // Item alýndý iþaretleyicisini true yap
+                Debug.Log("Item taken from ItemBox in DoTakeAction. itemTaken: " + itemTaken);
+
                 StartCoroutine(canPutCoolDown());
             }
         }
@@ -117,24 +128,26 @@ public class ActionController : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (inventory.CurrentType != ItemType.PIZZA) return;
-        if (other.gameObject.CompareTag("SellArea"))
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                Debug.Log("Selling item to customer.");
-                //CustomerManager.Instance.SellToCustomer();
-                inventory.ClearHand();
-            }
-        }
-    }
-
+    /*public void OnTriggerStay(Collider other)
+     {
+         if (inventory.CurrentType != ItemType.PIZZA) return;
+         if (other.gameObject.CompareTag("SellArea"))
+         {
+             if (Input.GetMouseButtonDown(0))
+             {
+                 Debug.Log("Selling item to customer.");
+                 //CustomerManager.Instance.SellToCustomer();
+                 inventory.ClearHand();
+                 itemTaken = false;
+             }
+         }
+     }
+      }*/
     private IEnumerator canPutCoolDown()
     {
         canPut = false;
         yield return takeCooldown;
         canPut = true;
+
     }
-} 
+}
