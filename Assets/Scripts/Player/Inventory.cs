@@ -14,6 +14,9 @@ public class ObjectnType
 
 public class Inventory : MonoBehaviour
 {
+    private ItemType currentItem = ItemType.NONE;
+
+
     [SerializeField] private List<ObjectnType> itemsToHold = new List<ObjectnType>();
     private ItemType currentType;
     public ItemType CurrentType { get { return currentType; } }
@@ -76,4 +79,9 @@ public class Inventory : MonoBehaviour
         Debug.Log("Getting current item: " + currentType);
         return currentType;
     }
+    public void SetItem(ItemType item)
+    {
+        currentItem = item;
+    }
+
 }

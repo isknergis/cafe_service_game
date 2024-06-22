@@ -15,11 +15,33 @@ public class ActionController : MonoBehaviour
     // Item alýndýðýný belirten iþaretleyici
     public bool itemTaken = false;
 
+
+
+    public GameObject[] itemsToPlace;
+    public Transform[] counterTransforms;
+
+ 
+    
+
+
+
+
+    public string[] tags = { "CheesecakeStraw", "CupcakeRedVelvet", "OrangeJuice", "Burger", "Plate", "Lemonade" };
+
+
+
+
     private void Awake()
     {
         canPut = true;
         inventory = GetComponent<Inventory>();
         takeCooldown = new WaitForSeconds(1);
+    }
+
+    private void Start()
+    {
+
+        counterTransforms = new Transform[2];
     }
 
     void Update()
@@ -53,7 +75,9 @@ public class ActionController : MonoBehaviour
             Debug.Log("DoTakeAction called from Update.");
             DoTakeAction();
         }
+
     }
+    
 
     public void StartProcessAction()
     {
@@ -106,7 +130,7 @@ public class ActionController : MonoBehaviour
                     {
                         inventory.PutItem();
                         inventory.ClearHand();
-                        itemTaken = false;  // Item býrakýldý iþaretleyicisini false yap
+                        itemTaken = false;
                         Debug.Log("Item put in box in DoTakeAction. itemTaken: " + itemTaken);
                     }
                 }
@@ -116,10 +140,24 @@ public class ActionController : MonoBehaviour
                 Debug.Log("Hit ItemBox: " + itemBox.name);
                 inventory.TakeItem(itemBox.GetItem());
 
-                itemTaken = true;  // Item alýndý iþaretleyicisini true yap
+                itemTaken = true;
                 Debug.Log("Item taken from ItemBox in DoTakeAction. itemTaken: " + itemTaken);
-
-                StartCoroutine(canPutCoolDown());
+            }
+            if (hit.collider.TryGetComponent<Customer>(out Customer customer))
+            {
+                Debug.Log("Hit Customer: " + customer.name);
+                ItemType itemInHand = inventory.GetItem();
+                Debug.Log("Player's item in hand: " + itemInHand);
+                if (customer.ReceiveItem(itemInHand))
+                {
+                    inventory.ClearHand();
+                    itemTaken = false;
+                    Debug.Log("Item given to customer successfully.");
+                }
+                else
+                {
+                    Debug.Log("Customer did not want this item.");
+                }
             }
         }
         else
@@ -143,11 +181,9 @@ public class ActionController : MonoBehaviour
          }
      }
       }*/
-    private IEnumerator canPutCoolDown()
-    {
-        canPut = false;
-        yield return takeCooldown;
-        canPut = true;
 
-    }
 }
+
+
+
+
