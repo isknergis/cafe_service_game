@@ -10,8 +10,9 @@ public class Customer : MonoBehaviour
 
     private void Start()
     {
-        // Müþterinin bekleme süresi baþlatýlýr
+   
         timer = patienceTime;
+      
     }
 
     private void Update()
@@ -24,13 +25,28 @@ public class Customer : MonoBehaviour
         }
     }
 
+  /*  private ItemType GetRandomItem()
+    {
+        ItemType[] items = {
+            ItemType.CHEESECAKESTRAW, ItemType.CUPCAKEREDVELVET,
+            ItemType.LEMONADE, ItemType.ORANGEJUÝCE,
+             ItemType.BURGER
+        };
+        int randomIndex = Random.Range(0, items.Length);
+        return items[randomIndex];
+    }*/
+
+
+
     public bool ReceiveItem(ItemType item)
     {
         if (item == desiredItem)
         {
             Debug.Log("Müþteri istediði ürünü aldý.");
             // Müþteri ürünü aldýðýnda yapýlacak iþlemler
+            Destroy(gameObject, 10f);
             return true;
+            
         }
         else
         {
@@ -38,4 +54,21 @@ public class Customer : MonoBehaviour
             return false;
         }
     }
+
+
+
+
+    public void MoveNext(Vector3 nextPosition)
+    {
+        // Yeni pozisyona gitme iþlemleri burada yapýlýr
+        transform.position = nextPosition;
+    }
+    public void ExitFromArea(Vector3 exitPosition)
+    {
+        // Çýkýþ pozisyonuna gitme iþlemleri burada yapýlýr
+        transform.position = exitPosition;
+        // Müþteriyi yok etme veya baþka bir iþlem yapma
+        Destroy(gameObject);
+    }
+
 }
