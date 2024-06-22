@@ -2492,7 +2492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa853a3442a49d4e95c134fed55804c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: 5
+  item: 4
 --- !u!1 &137321956
 GameObject:
   m_ObjectHideFlags: 0
@@ -2946,7 +2946,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6fa94c3c22618741b9f16876be47c6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  desiredItem: 0
+  desiredItem: 4
   patienceTime: 100
 --- !u!1 &165077567
 GameObject:
@@ -3131,7 +3131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6fa94c3c22618741b9f16876be47c6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  desiredItem: 0
+  desiredItem: 4
   patienceTime: 60
 --- !u!136 &177448500
 CapsuleCollider:
@@ -19755,7 +19755,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6fa94c3c22618741b9f16876be47c6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  desiredItem: 1
+  desiredItem: 4
   patienceTime: 140
 --- !u!136 &1169829994
 CapsuleCollider:
@@ -36968,7 +36968,7 @@ MonoBehaviour:
   - item: {fileID: 1840445088}
     type: 1
   - item: {fileID: 7869060887604816552}
-    type: 5
+    type: 4
   - item: {fileID: 1364940505}
     type: 3
   - item: {fileID: 1688877590}
@@ -37035,7 +37035,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemsToActivate:
-  - {fileID: 130681237}
   - {fileID: 1571354028}
   - {fileID: 788502182}
   objectToDetect: {fileID: 663414785}

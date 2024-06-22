@@ -24,8 +24,8 @@ public class RaycastItemActivation : MonoBehaviour
             {
                 // Eðer ýþýn objectToDetect objesine çarparsa
                 if (hit.collider.gameObject == itemsToActivate[0] ||
-                    hit.collider.gameObject == itemsToActivate[1] ||
-                    hit.collider.gameObject == itemsToActivate[2] )
+                    hit.collider.gameObject == itemsToActivate[1] 
+                )
                     
                 {
                     
