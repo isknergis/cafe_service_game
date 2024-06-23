@@ -2,17 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using TMPro;
+
 public class Customer : MonoBehaviour
 {
     public ItemType desiredItem;
     public float patienceTime = 30.0f; // Müþterinin bekleme süresi
     private float timer;
 
+
+    public TextMeshProUGUI itemText;
+
+
     private void Start()
     {
    
         timer = patienceTime;
-      
+        UpdateItemText();
+
     }
 
     private void Update()
@@ -70,5 +77,11 @@ public class Customer : MonoBehaviour
         // Müþteriyi yok etme veya baþka bir iþlem yapma
         Destroy(gameObject);
     }
-
+    private void UpdateItemText()
+    {
+        if (itemText != null)
+        {
+            itemText.text = desiredItem.ToString();
+        }
+    }
 }

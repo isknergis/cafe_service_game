@@ -11,10 +11,10 @@ public class CustomerManager : MonoBehaviour
     [SerializeField] private List<Customer> customerPrefabs = new List<Customer>();
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private Transform exitPoint;
+    [SerializeField] private float customerSpacing = 2.0f; // Müþteriler arasýndaki mesafe
     private float currentTime = 0f;
     private float spawnTime;
-    private float lrRandom = 0.75f;
-    private Queue<Customer> customerList = new Queue<Customer>();
+    private List<Customer> customerList = new List<Customer>();
 
     private void Awake()
     {
@@ -22,8 +22,20 @@ public class CustomerManager : MonoBehaviour
         spawnTime = Random.Range(spawnRateMin, spawnRateMax); // Ýlk spawn zamaný belirleme
     }
 
+    private void Start()
+    {
+        // Prefab'larýn doðru þekilde atandýðýný kontrol et
+        if (customerPrefabs == null || customerPrefabs.Count == 0)
+        {
+            Debug.LogError("Customer prefabs list is empty or null. Please assign prefabs in the inspector.");
+            return;
+        }
+    }
+
     private void Update()
     {
+        if (customerPrefabs == null || customerPrefabs.Count == 0) return; // Prefab listesi boþsa güncellemeyi durdur
+
         if (customerList.Count < maxCustomers) // Maksimum müþteri sayýsýný kontrol et
         {
             currentTime += Time.deltaTime;
@@ -38,9 +50,9 @@ public class CustomerManager : MonoBehaviour
 
     private void SpawnCustomer()
     {
-        Vector3 spawnPos = spawnPoint.position + (spawnPoint.forward * -1 * customerList.Count) + spawnPoint.right * Random.Range(-lrRandom, lrRandom);
+        Vector3 spawnPos = spawnPoint.position + (spawnPoint.forward * -1 * customerList.Count * customerSpacing);
         Customer temp = Instantiate(customerPrefabs[Random.Range(0, customerPrefabs.Count)], spawnPos, spawnPoint.rotation);
-        customerList.Enqueue(temp);
+        customerList.Add(temp);
     }
 
     public void SellToCustomer()
@@ -48,8 +60,14 @@ public class CustomerManager : MonoBehaviour
         if (customerList.Count == 0) return;
 
         // Çýkýþ yapan müþteriyi belirle
-        Customer firstCustomer = customerList.Dequeue(); // Müþteriyi kuyruktan çýkar
-        firstCustomer.ExitFromArea(exitPoint.position);
+        Customer firstCustomer = customerList[0]; // Ýlk müþteriyi al
+        if (firstCustomer != null)
+        {
+            firstCustomer.ExitFromArea(exitPoint.position);
+        }
+
+        // Listeden çýkýþ yapan müþteriyi çýkar
+        customerList.RemoveAt(0);
 
         // Geri kalan müþterilerin pozisyonlarýný güncelle
         UpdateCustomerPositions();
@@ -57,11 +75,13 @@ public class CustomerManager : MonoBehaviour
 
     private void UpdateCustomerPositions()
     {
-        Customer[] customers = customerList.ToArray();
-        for (int i = 0; i < customers.Length; i++)
+        for (int i = 0; i < customerList.Count; i++)
         {
-            Vector3 nextPos = spawnPoint.position + (spawnPoint.forward * -1 * i) + spawnPoint.right * Random.Range(-lrRandom, lrRandom);
-            customers[i].MoveNext(nextPos);
+            if (customerList[i] != null)
+            {
+                Vector3 nextPos = spawnPoint.position + (spawnPoint.forward * -1 * i * customerSpacing);
+                customerList[i].MoveNext(nextPos);
+            }
         }
     }
 }
