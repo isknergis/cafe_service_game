@@ -150,8 +150,12 @@ public class ActionController : MonoBehaviour
                 Debug.Log("Player's item in hand: " + itemInHand);
                 if (customer.ReceiveItem(itemInHand))
                 {
+
+                    CustomerManager.Instance.SellToCustomer();
+
                     inventory.ClearHand();
                     itemTaken = false;
+                 
                     Debug.Log("Item given to customer successfully.");
                 }
                 else

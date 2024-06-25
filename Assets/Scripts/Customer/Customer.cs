@@ -2,36 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using DG.Tweening;
+using System;
 
 public class Customer : MonoBehaviour
 {
     public ItemType desiredItem;
     public float patienceTime = 30.0f; // Müþterinin bekleme süresi
     private float timer;
-    private bool isExiting = false; // Müþteri çýkýþta mý kontrolü
     public TextMeshProUGUI itemText;
     public TextMeshProUGUI receivedItemsText; // Aldýðý ürünleri göstermek için
-
     private List<ItemType> receivedItems = new List<ItemType>(); // Aldýðý ürünlerin listesi
 
     private void Start()
     {
         desiredItem = GetRandomItem(); // Rastgele bir item belirle
         timer = patienceTime;
-        UpdateItemText();
+        UpdateItemText(); // UI'yi güncelle
         UpdateReceivedItemsText(); // Baþlangýçta UI öðelerini güncelle
     }
 
     private void Update()
     {
-        if (!isExiting)
+        timer -= Time.deltaTime;
+        if (timer <= 0)
         {
-            // Bekleme süresi azalýr
-            timer -= Time.deltaTime;
-            if (timer <= 0)
-            {
-                StartCoroutine(MoveToPosition(CustomerManager.Instance.exitPoint.position, true));
-            }
+            ExitFromArea(CustomerManager.Instance.exitPoint.position);
         }
     }
 
@@ -42,8 +38,7 @@ public class Customer : MonoBehaviour
             Debug.Log("Müþteri istediði ürünü aldý.");
             receivedItems.Add(item); // Aldýðý ürünü listeye ekle
             UpdateReceivedItemsText(); // Aldýðý ürünleri güncelle
-            // Müþteri ürünü aldýðýnda yapýlacak iþlemler
-            StartCoroutine(MoveToPosition(CustomerManager.Instance.exitPoint.position, true));
+            ExitFromArea(CustomerManager.Instance.exitPoint.position); // Ürünü aldýðýnda çýkýþ yap
             return true;
         }
         else
@@ -53,15 +48,14 @@ public class Customer : MonoBehaviour
         }
     }
 
-    public void MoveNext(Vector3 nextPosition)
+    public void MoveNext(Vector3 pos)
     {
-        StartCoroutine(MoveToPosition(nextPosition));
+        transform.DOMove(pos, 2);
     }
 
-    public void ExitFromArea(Vector3 exitPosition)
+    public void ExitFromArea(Vector3 pos)
     {
-        isExiting = true;
-        StartCoroutine(MoveToPosition(exitPosition, true));
+        transform.DOMove(pos, 3).OnComplete(() => { Destroy(this.gameObject); });
     }
 
     private void UpdateItemText()
@@ -84,27 +78,6 @@ public class Customer : MonoBehaviour
         }
     }
 
-    private IEnumerator MoveToPosition(Vector3 targetPosition, bool destroyOnArrival = false)
-    {
-        float elapsedTime = 0;
-        float duration = 1.0f; // Hareket süresi (sn)
-        Vector3 startingPosition = transform.position;
-
-        while (elapsedTime < duration)
-        {
-            transform.position = Vector3.Lerp(startingPosition, targetPosition, (elapsedTime / duration));
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        transform.position = targetPosition;
-
-        if (destroyOnArrival)
-        {
-            Destroy(gameObject);
-        }
-    }
-
     private ItemType GetRandomItem()
     {
         ItemType[] items = {
@@ -112,7 +85,7 @@ public class Customer : MonoBehaviour
             ItemType.LEMONADE, ItemType.ORANGEJUÝCE,
             ItemType.BURGER
         };
-        int randomIndex = Random.Range(0, items.Length);
+        int randomIndex = UnityEngine.Random.Range(0, items.Length);
         return items[randomIndex];
     }
 }
