@@ -18,6 +18,6 @@ public class CameraFollow : MonoBehaviour
         secondaryCamera.clearFlags = CameraClearFlags.Depth;
 
         // Ýkinci Kameranýn Görüntü Alaný
-        secondaryCamera.rect = new Rect(0.75f, 0.0f, 0.25f, 0.25f);
+        secondaryCamera.rect = new Rect(0.75f, 0.0f, 0.75f, 0.75f);
     }
 }

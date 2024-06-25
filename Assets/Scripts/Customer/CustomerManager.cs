@@ -10,7 +10,7 @@ public class CustomerManager : MonoBehaviour
     [SerializeField] private int maxCustomers = 5; // Maksimum müþteri sayýsý
     [SerializeField] private List<Customer> customerPrefabs = new List<Customer>();
     [SerializeField] private Transform spawnPoint;
-    [SerializeField] private Transform exitPoint;
+    [SerializeField] public Transform exitPoint; // ExitPoint'i public yapýn
     [SerializeField] private float customerSpacing = 2.0f; // Müþteriler arasýndaki mesafe
     private float currentTime = 0f;
     private float spawnTime;
@@ -71,6 +71,9 @@ public class CustomerManager : MonoBehaviour
 
         // Geri kalan müþterilerin pozisyonlarýný güncelle
         UpdateCustomerPositions();
+
+        // Yeni bir müþteri oluþtur
+        SpawnCustomer();
     }
 
     private void UpdateCustomerPositions()
