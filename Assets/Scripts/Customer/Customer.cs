@@ -8,18 +8,32 @@ using System;
 public class Customer : MonoBehaviour
 {
     public ItemType desiredItem;
-    public float patienceTime = 30.0f; // Müþterinin bekleme süresi
+    public float patienceTime = 30.0f;
     private float timer;
     public TextMeshProUGUI itemText;
-    public TextMeshProUGUI receivedItemsText; // Aldýðý ürünleri göstermek için
-    private List<ItemType> receivedItems = new List<ItemType>(); // Aldýðý ürünlerin listesi
+    public TextMeshProUGUI receivedItemsText;
+    public TextMeshProUGUI totalCoin; 
+
+    private List<ItemType> receivedItems = new List<ItemType>();
+
+    private static Dictionary<ItemType, float> itemPrices = new Dictionary<ItemType, float>()
+    {
+        { ItemType.CHEESECAKESTRAW, 5.0f },
+        { ItemType.CUPCAKEREDVELVET, 4.0f },
+        { ItemType.LEMONADE, 2.5f },
+        { ItemType.ORANGEJUÝCE, 3.0f },
+        { ItemType.BURGER, 6.0f }
+    };
+
+    public static float totalEarnings = 0.0f;
 
     private void Start()
     {
         desiredItem = GetRandomItem();
         timer = patienceTime;
-        UpdateItemText(); // UI'yi güncelle
-        UpdateReceivedItemsText(); // Baþlangýçta UI öðelerini güncelle
+        UpdateItemText();
+        UpdateReceivedItemsText();
+        UpdateTotalEarningsText(); 
     }
 
     private void Update()
@@ -36,9 +50,17 @@ public class Customer : MonoBehaviour
         if (item == desiredItem)
         {
             Debug.Log("Müþteri istediði ürünü aldý.");
-            receivedItems.Add(item); // Aldýðý ürünü listeye ekle
-            UpdateReceivedItemsText(); // Aldýðý ürünleri güncelle
-            ExitFromArea(CustomerManager.Instance.exitPoint.position); // Ürünü aldýðýnda çýkýþ yap
+            receivedItems.Add(item);
+            UpdateReceivedItemsText();
+
+            if (itemPrices.ContainsKey(item))
+            {
+                totalEarnings += itemPrices[item];
+                Debug.Log("Toplam Kazanç: " + totalEarnings);
+                UpdateTotalEarningsText(); 
+            }
+
+            ExitFromArea(CustomerManager.Instance.exitPoint.position);
             return true;
         }
         else
@@ -75,6 +97,14 @@ public class Customer : MonoBehaviour
             {
                 receivedItemsText.text += item.ToString() + "\n";
             }
+        }
+    }
+
+    private void UpdateTotalEarningsText()
+    {
+        if (totalCoin != null)
+        {
+            totalCoin.text = "Toplam Kazanç: " + totalEarnings.ToString("F2") + " TL"; 
         }
     }
 

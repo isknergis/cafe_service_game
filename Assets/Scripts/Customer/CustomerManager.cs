@@ -33,7 +33,7 @@ public class CustomerManager : MonoBehaviour
 
     private void Update()
     {
-        if (currentTime <= Random.Range(4, 6))
+        if (currentTime <= Random.Range(40, 60))
         {
             currentTime += Time.deltaTime * timerSpeed;
         }
