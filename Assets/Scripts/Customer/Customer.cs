@@ -16,7 +16,7 @@ public class Customer : MonoBehaviour
 
     private void Start()
     {
-        desiredItem = GetRandomItem(); // Rastgele bir item belirle
+        desiredItem = GetRandomItem();
         timer = patienceTime;
         UpdateItemText(); // UI'yi güncelle
         UpdateReceivedItemsText(); // Baþlangýçta UI öðelerini güncelle
