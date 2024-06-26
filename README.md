@@ -3,8 +3,8 @@
 ![Ekran görüntüsü 2024-06-26 224728](https://github.com/isknergis/cafee1/assets/152815776/6d7f2e70-dffd-4b56-8290-266c814aae20)
 
 ## Customers choose from 5 different products. The character earns money by selling each product.
-## Press the E key to serve the customer.
-## You must be in front of the product to serve.
+## Stand in front of the product and press the E key to pick it up.
+## Stand in front of the customer and press the E key to serve the customer.
 ## If the character gets up the wrong product, press the Q key to clear the character's hand.
 
 
