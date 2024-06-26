@@ -6,7 +6,7 @@ public class RaycastItemActivation : MonoBehaviour
 {
     public GameObject[] itemsToActivate;
  
-    public GameObject objectToDetect; // Iþýnýn çarptýðý nesne
+    public GameObject objectToDetect;
 
     void Start()
     {
@@ -16,19 +16,18 @@ public class RaycastItemActivation : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
-        { // Iþýn oluþturma
+        { 
             Debug.Log("StartProcessAction called.");
             Ray ray = new Ray(transform.position + Vector3.up / 2, transform.forward);
-            // Iþýn çarpýþma kontrolü
+      
             if (Physics.Raycast(ray, out RaycastHit hit, 1))
             {
-                // Eðer ýþýn objectToDetect objesine çarparsa
+            
                 if (hit.collider.gameObject == itemsToActivate[0] ||
                     hit.collider.gameObject == itemsToActivate[1] 
                 )
                     
                 {
-                    
                         objectToDetect.SetActive(true);
                     return;
                 }

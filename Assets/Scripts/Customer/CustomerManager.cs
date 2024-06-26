@@ -10,7 +10,7 @@ public class CustomerManager : MonoBehaviour
     [SerializeField] private List<Customer> customerPrefabs = new List<Customer>();
     [SerializeField] private Transform spawnPoint;
     [SerializeField] public Transform exitPoint;
-    [SerializeField] private float customerSpacing = 2.0f; // Müþteriler arasýndaki mesafe
+    [SerializeField] private float customerSpacing = 2.0f; 
     private float currentTime = 0f;
     private float spawnTime;
     private float lrRandom = 0.5f;
@@ -33,7 +33,7 @@ public class CustomerManager : MonoBehaviour
 
     private void Update()
     {
-        if (currentTime <= Random.Range(40, 60))
+        if (currentTime <= Random.Range(15, 50))
         {
             currentTime += Time.deltaTime * timerSpeed;
         }
@@ -52,7 +52,7 @@ public class CustomerManager : MonoBehaviour
     {
         if (customerList.Count == 0) return;
 
-        Customer firstCustomer = customerList.Peek(); // Ýlk müþteriyi al
+        Customer firstCustomer = customerList.Peek();
         firstCustomer.ExitFromArea(exitPoint.position);
         customerList.Dequeue();
         for (int i = 0; i < customerList.Count; i++)

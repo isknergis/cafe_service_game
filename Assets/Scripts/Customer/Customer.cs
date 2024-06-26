@@ -84,7 +84,7 @@ public class Customer : MonoBehaviour
     {
         if (itemText != null)
         {
-            itemText.text = "Ýstediði Ürün: " + desiredItem.ToString();
+            itemText.text = desiredItem.ToString();
         }
     }
 

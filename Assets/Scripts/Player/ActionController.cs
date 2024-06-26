@@ -12,7 +12,7 @@ public class ActionController : MonoBehaviour
     public bool isProcessing = false;
     public bool canPut = true;
 
-    // Item alýndýðýný belirten iþaretleyici
+
     public bool itemTaken = false;
 
 
@@ -75,7 +75,10 @@ public class ActionController : MonoBehaviour
             Debug.Log("DoTakeAction called from Update.");
             DoTakeAction();
         }
-
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            inventory.ClearHand();
+        }
     }
     
 
@@ -109,7 +112,7 @@ public class ActionController : MonoBehaviour
             currentFunction.ClearObject();
             inventory.TakeItem(item);
             isWorking = false;
-            itemTaken = true;  // Item alýndý iþaretleyicisini true yap
+            itemTaken = true;  
             Debug.Log("Item taken in DoProcess. Item: " + item + ", itemTaken: " + itemTaken);
         }
     }
@@ -169,22 +172,6 @@ public class ActionController : MonoBehaviour
             Debug.Log("Raycast did not hit anything in DoTakeAction.");
         }
     }
-
-    /*public void OnTriggerStay(Collider other)
-     {
-         if (inventory.CurrentType != ItemType.PIZZA) return;
-         if (other.gameObject.CompareTag("SellArea"))
-         {
-             if (Input.GetMouseButtonDown(0))
-             {
-                 Debug.Log("Selling item to customer.");
-                 //CustomerManager.Instance.SellToCustomer();
-                 inventory.ClearHand();
-                 itemTaken = false;
-             }
-         }
-     }
-      }*/
 
 }
 
